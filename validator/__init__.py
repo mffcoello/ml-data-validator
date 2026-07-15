@@ -31,3 +31,11 @@ def check_outliers(df: pd.DataFrame, columns: list, multiplier: float = 1.5) -> 
             "outlier_count": len(outliers),
         }
     return report
+
+def check_missing_by_group(df: pd.DataFrame, group_col: str, threshold: float = 0.05) -> dict:
+    report = {}
+    for group_value in df[group_col].unique():
+        subgroup = df[df[group_col] == group_value]
+        result = check_missing(subgroup, threshold=threshold)
+        report[group_value] = result["missing_pct"]
+    return report
